@@ -4,12 +4,13 @@ public class PlayerMovement : MonoBehaviour
 {
   public CharacterController2D controller;
   float horizontalMove = 0f;
-  float walkSpeed = 40f;
-  float sprintSpeed = 70f;
+  public float walkSpeed = 40f;
+  public float sprintSpeed = 70f;
   float currentSpeed;
   bool jump = false;
   bool crouch = false;
   public Animator animator;
+
   // Start is called once before the first execution of Update after the MonoBehaviour is created
   void Start()
   {
@@ -48,6 +49,8 @@ public class PlayerMovement : MonoBehaviour
     }
 
     animator.SetBool("IsCrouching", crouch);
+
+    // Check if player goes out of bounds and reset position
   }
 
   public void OnLanding()
