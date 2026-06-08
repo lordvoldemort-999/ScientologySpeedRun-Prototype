@@ -18,7 +18,11 @@ public class PlayerAttack : MonoBehaviour
 
   [Header("References")]
   public Animator animator;
-  public Transform attackPos;
+  public Transform punchPos;
+  public Transform frontKickPos;
+  public Transform upPunchPos;
+  public Transform backKickPos;
+  public Transform downKickPos;
   public LayerMask whatIsEnemies;
 
   [Header("Punch Settings")]
@@ -92,14 +96,17 @@ public class PlayerAttack : MonoBehaviour
     switch (currentWeapon)
     {
       case WeaponType.Fist:
-        if (vInput > 0) TriggerAttack("UpPunch", upPunchRange, upPunchDamage);
-        else if (!(vInput < 0) && !(vInput > 0)) TriggerAttack("Punch", punchRange, punchDamage);
+        if (vInput > 0) TriggerAttack("UpPunch", upPunchRange, upPunchDamage, upPunchPos);
+        else if (!(vInput < 0) && !(vInput > 0)) TriggerAttack("Punch", punchRange, punchDamage, punchPos);
         break;
       case WeaponType.Sword:
         // sword attack code here
+        if (vInput > 0) TriggerAttack("UpSwordSwing", upPunchRange, upPunchDamage, upPunchPos);
+        else if (!(vInput < 0) && !(vInput > 0)) TriggerAttack("SwordSwing", frontKickRange, frontKickDamage, frontKickPos); 
         break;
       case WeaponType.Staff:
-        // staff attack code here
+        if (vInput > 0) TriggerAttack("StaffUpDownSwing", upPunchRange, upPunchDamage + 1, upPunchPos);
+        else if (!(vInput < 0) && !(vInput > 0)) TriggerAttack("StaffSwing", punchRange, punchDamage + 1, punchPos);
         break;
     }
   }
@@ -110,9 +117,9 @@ public class PlayerAttack : MonoBehaviour
     switch (currentWeapon)
     {
       case WeaponType.Fist:
-        if (vInput > 0) TriggerAttack("BackKick", backKickRange, backKickDamage);
-        else if (vInput < 0) TriggerAttack("DownKick", downKickRange, downKickDamage);
-        else TriggerAttack("FrontKick", frontKickRange, frontKickDamage);
+        if (vInput > 0) TriggerAttack("BackKick", backKickRange, backKickDamage, backKickPos);
+        else if (vInput < 0) TriggerAttack("DownKick", downKickRange, downKickDamage, downKickPos);
+        else TriggerAttack("FrontKick", frontKickRange, frontKickDamage, frontKickPos);
         break;
       case WeaponType.Sword:
         // sword attack code here
@@ -123,7 +130,7 @@ public class PlayerAttack : MonoBehaviour
     }
   }
 
-  void TriggerAttack(string animationTriggerName, float range, int damageValue)
+  void TriggerAttack(string animationTriggerName, float range, int damageValue, Transform attackPos)
   {
     animator.SetTrigger(animationTriggerName);
     Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(attackPos.position, range, whatIsEnemies);
@@ -141,8 +148,12 @@ public class PlayerAttack : MonoBehaviour
   void OnDrawGizmosSelected()
   {
     Gizmos.color = Color.red;
-    Gizmos.DrawWireSphere(attackPos.position, punchRange);
-    Gizmos.DrawWireSphere(attackPos.position, frontKickRange);
+    Gizmos.DrawWireSphere(punchPos.position, punchRange);
+    Gizmos.DrawWireSphere(frontKickPos.position, frontKickRange);
+    Gizmos.DrawWireSphere(upPunchPos.position, upPunchRange);
+    Gizmos.DrawWireSphere(frontKickPos.position, frontKickRange);
+    Gizmos.DrawWireSphere(backKickPos.position, backKickRange);
+    Gizmos.DrawWireSphere(downKickPos.position, downKickRange);
   }
 
 }
