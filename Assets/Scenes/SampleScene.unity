@@ -310,6 +310,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   controller: {fileID: 270598324}
+  walkSpeed: 40
+  sprintSpeed: 70
   animator: {fileID: 270598327}
 --- !u!61 &270598326
 BoxCollider2D:
