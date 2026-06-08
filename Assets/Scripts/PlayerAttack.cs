@@ -1,3 +1,4 @@
+using System;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -11,7 +12,7 @@ public class PlayerAttack : MonoBehaviour
   public float startTimeBtwAttacks;
   private float timeBtwAttacks;
 
-  public enum WeaponType {Fist, Sword, Staff}
+  public enum WeaponType { Fist, Sword, Staff }
 
   [Header("Current Equipment")]
   public WeaponType currentWeapon = WeaponType.Fist;
@@ -77,12 +78,14 @@ public class PlayerAttack : MonoBehaviour
       currentWeapon = WeaponType.Fist;
       animator.SetInteger("WeaponID", 0);
       print("Equipped:" + currentWeapon);
-    } else if (Input.GetKeyDown(KeyCode.Alpha2))
+    }
+    else if (Input.GetKeyDown(KeyCode.Alpha2))
     {
       currentWeapon = WeaponType.Sword;
       animator.SetInteger("WeaponID", 1);
       print("Equipped:" + currentWeapon);
-    } else if (Input.GetKeyDown(KeyCode.Alpha3))
+    }
+    else if (Input.GetKeyDown(KeyCode.Alpha3))
     {
       currentWeapon = WeaponType.Staff;
       animator.SetInteger("WeaponID", 2);
@@ -98,15 +101,19 @@ public class PlayerAttack : MonoBehaviour
       case WeaponType.Fist:
         if (vInput > 0) TriggerAttack("UpPunch", upPunchRange, upPunchDamage, upPunchPos);
         else if (!(vInput < 0) && !(vInput > 0)) TriggerAttack("Punch", punchRange, punchDamage, punchPos);
+        // play the taijutsu combo if player is holding the shift key
+        else if (Input.GetKey(KeyCode.LeftShift)) TriggerAttack("TaijutsuCombo", punchRange, backKickDamage, punchPos
+        );
         break;
+      // sword attack code here
       case WeaponType.Sword:
-        // sword attack code here
         if (vInput > 0) TriggerAttack("UpSwordSwing", upPunchRange, upPunchDamage, upPunchPos);
-        else if (!(vInput < 0) && !(vInput > 0)) TriggerAttack("SwordSwing", frontKickRange, frontKickDamage, frontKickPos); 
+        else if (!(vInput < 0) && !(vInput > 0)) TriggerAttack("SwordSwing", frontKickRange, frontKickDamage, frontKickPos);
+        // play the sword combo if player is holding down the shift key 
+
         break;
       case WeaponType.Staff:
-        if (vInput > 0) TriggerAttack("StaffUpDownSwing", upPunchRange, upPunchDamage + 1, upPunchPos);
-        else if (!(vInput < 0) && !(vInput > 0)) TriggerAttack("StaffSwing", punchRange, punchDamage + 1, punchPos);
+        TriggerAttack("StaffSwing", punchRange, punchDamage + 1, punchPos);
         break;
     }
   }
@@ -122,10 +129,11 @@ public class PlayerAttack : MonoBehaviour
         else TriggerAttack("FrontKick", frontKickRange, frontKickDamage, frontKickPos);
         break;
       case WeaponType.Sword:
-        // sword attack code here
+        if (Input.GetKey(KeyCode.LeftShift)) TriggerAttack("Finisher", backKickRange, backKickDamage, backKickPos);
+        else TriggerAttack("Combo", backKickRange, backKickDamage, backKickPos);
         break;
       case WeaponType.Staff:
-        // staff attack code here
+        TriggerAttack("StaffUpDownSwing", upPunchRange, upPunchDamage + 1, upPunchPos);
         break;
     }
   }
