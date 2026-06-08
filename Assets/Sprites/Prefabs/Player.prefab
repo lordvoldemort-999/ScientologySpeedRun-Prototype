@@ -39,6 +39,7 @@ Transform:
   m_Children:
   - {fileID: 2542622019710013178}
   - {fileID: 1662518041962868319}
+  - {fileID: 3500359219723819661}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &4852625211175830090
@@ -139,7 +140,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 409320a1b3144314e80d11361c53b683, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterController2D
-  m_JumpForce: 275
+  m_JumpForce: 200
   m_CrouchSpeed: 0.25
   m_MovementSmoothing: 0.05
   m_AirControl: 0
@@ -321,6 +322,47 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27f998f9efc82e4499871cddfe9292f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAttack
+  startTimeBtwAttacks: 0
+  animator: {fileID: 6611662551011514721}
+  attackPos: {fileID: 3500359219723819661}
+  whatIsEnemies:
+    serializedVersion: 2
+    m_Bits: 8
+  punchRange: 0
+  punchDamage: 0
+  kickRange: 0
+  kickDamage: 0
+--- !u!1 &4267985110024252538
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3500359219723819661}
+  m_Layer: 0
+  m_Name: AttackPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3500359219723819661
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4267985110024252538}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.691, y: 0.4, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 9222254552369316608}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7136272575274660502
 GameObject:
   m_ObjectHideFlags: 0
