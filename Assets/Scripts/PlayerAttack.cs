@@ -1,6 +1,8 @@
 using System;
+using NUnit.Framework;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class PlayerAttack : MonoBehaviour
 {
@@ -46,22 +48,34 @@ public class PlayerAttack : MonoBehaviour
   public float downKickRange;
   public int downKickDamage;
 
+  [Header("")]
+  private string bufferedInput = "";
+  private float inputBufferTimer = 0f;
+  public float maxBufferTime = 0.2f;
+  private bool isCurrentlyAttacking = false;
 
   // Update is called once per frame
   void Update()
   {
     HandleWeaponSwitching();
+    ProcessInputWithBuffer();
+
+    if (inputBufferTimer > 0)
+    {
+      inputBufferTimer -= Time.deltaTime;
+      if (inputBufferTimer <= 0)
+      {
+        bufferedInput = "";         // Timer expired, clear the stored input
+      }
+    }
+
     if (timeBtwAttacks <= 0)
     {
-      // "J" is for punching
-      if (Input.GetKey(KeyCode.J))
+      isCurrentlyAttacking = false;
+      animator.SetBool("IsAttacking", isCurrentlyAttacking);
+      if (bufferedInput != "")
       {
-        HandleJAttack();
-      }
-      // "K" is for kicking/heavy attacks
-      else if (Input.GetKeyDown(KeyCode.K))
-      {
-        HandleKAttack();
+        ExecuteBufferedAttack();
       }
     }
     else
@@ -71,86 +85,111 @@ public class PlayerAttack : MonoBehaviour
 
   }
 
-  void HandleWeaponSwitching()
+  void ProcessInputWithBuffer()
   {
-    if (Input.GetKeyDown(KeyCode.Alpha1))
+    // "J" processing input
+    if (Input.GetKeyDown(KeyCode.J))
     {
-      currentWeapon = WeaponType.Fist;
-      animator.SetInteger("WeaponID", 0);
-      print("Equipped:" + currentWeapon);
+      string attackToBuffer = DetermineJAttackName();
+      BufferAction(attackToBuffer);
     }
-    else if (Input.GetKeyDown(KeyCode.Alpha2))
+    else if (Input.GetKeyDown(KeyCode.K))
     {
-      currentWeapon = WeaponType.Sword;
-      animator.SetInteger("WeaponID", 1);
-      print("Equipped:" + currentWeapon);
-    }
-    else if (Input.GetKeyDown(KeyCode.Alpha3))
-    {
-      currentWeapon = WeaponType.Staff;
-      animator.SetInteger("WeaponID", 2);
-      print("Equipped:" + currentWeapon);
+      string attackToBuffer = DetermineKAttackName();
+      BufferAction(attackToBuffer);
     }
   }
 
-  void HandleJAttack()
+  void BufferAction(string AttackTriggerName)
+  {
+    bufferedInput = AttackTriggerName;
+    inputBufferTimer = maxBufferTime;
+  }
+
+  void ExecuteBufferedAttack()
+  {
+    string attackToPlay = bufferedInput;
+
+    bufferedInput = "";
+    inputBufferTimer = 0f;
+    ExecuteAttackProperties(attackToPlay);
+  }
+
+  string DetermineJAttackName()
   {
     float vInput = Input.GetAxisRaw("Vertical");
     switch (currentWeapon)
     {
       case WeaponType.Fist:
-        if (vInput > 0) TriggerAttack("UpPunch", upPunchRange, upPunchDamage, upPunchPos);
-        else if (!(vInput < 0) && !(vInput > 0)) TriggerAttack("Punch", punchRange, punchDamage, punchPos);
-        // play the taijutsu combo if player is holding the shift key
-        else if (Input.GetKey(KeyCode.LeftShift)) TriggerAttack("TaijutsuCombo", punchRange, backKickDamage, punchPos
-        );
-        break;
-      // sword attack code here
+        if (vInput > 0) return "UpPunch";
+        if (Input.GetKey(KeyCode.LeftShift)) return "TaijutsuCombo";
+        return "Punch";
       case WeaponType.Sword:
-        if (vInput > 0) TriggerAttack("UpSwordSwing", upPunchRange, upPunchDamage, upPunchPos);
-        else if (!(vInput < 0) && !(vInput > 0)) TriggerAttack("SwordSwing", frontKickRange, frontKickDamage, frontKickPos);
-        // play the sword combo if player is holding down the shift key 
-
-        break;
+        if (vInput > 0) return "UpSwordSwing";
+        return "SwordSwing";
       case WeaponType.Staff:
-        TriggerAttack("StaffSwing", punchRange, punchDamage + 1, punchPos);
-        break;
+        return "StaffSwing";
+      default:
+        return "";
     }
   }
 
-  void HandleKAttack()
+  string DetermineKAttackName()
   {
     float vInput = Input.GetAxisRaw("Vertical");
     switch (currentWeapon)
     {
       case WeaponType.Fist:
-        if (vInput > 0) TriggerAttack("BackKick", backKickRange, backKickDamage, backKickPos);
-        else if (vInput < 0) TriggerAttack("DownKick", downKickRange, downKickDamage, downKickPos);
-        else TriggerAttack("FrontKick", frontKickRange, frontKickDamage, frontKickPos);
-        break;
+        if (vInput > 0) return "BackKick";
+        if (vInput < 0) return "DownKick";
+        return "FrontKick";
       case WeaponType.Sword:
-        if (Input.GetKey(KeyCode.LeftShift)) TriggerAttack("Finisher", backKickRange, backKickDamage, backKickPos);
-        else TriggerAttack("Combo", backKickRange, backKickDamage, backKickPos);
-        break;
+        if (Input.GetKey(KeyCode.LeftShift)) return "Finisher";
+        return "Combo";
       case WeaponType.Staff:
-        TriggerAttack("StaffUpDownSwing", upPunchRange, upPunchDamage + 1, upPunchPos);
-        break;
+        return "StaffUpDownSwing";
+      default:
+        return "";
     }
   }
 
-  void TriggerAttack(string animationTriggerName, float range, int damageValue, Transform attackPos)
+  void ExecuteAttackProperties(string triggerName)
   {
-    animator.SetTrigger(animationTriggerName);
-    Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(attackPos.position, range, whatIsEnemies);
+    isCurrentlyAttacking = true;
+    animator.SetBool("IsAttacking", isCurrentlyAttacking);
+    animator.SetTrigger(triggerName);
+    timeBtwAttacks = startTimeBtwAttacks;
+
+    Transform targetPos = punchPos;
+    float targetRange = punchRange;
+    int targetDamage = punchDamage;
+
+    if (triggerName == "Punch") { targetPos = punchPos; targetRange = punchRange; targetDamage = punchDamage; }
+    else if (triggerName == "UpPunch") { targetPos = upPunchPos; targetRange = upPunchRange; targetDamage = upPunchDamage; }
+    else if (triggerName == "FrontKick") { targetPos = frontKickPos; targetRange = frontKickRange; targetDamage = frontKickDamage; }
+    else if (triggerName == "BackKick") { targetPos = backKickPos; targetRange = backKickRange; targetDamage = backKickDamage; }
+    else if (triggerName == "DownKick") { targetPos = downKickPos; targetRange = downKickRange; targetDamage = downKickDamage; }
+    else if (triggerName == "SwordSwing") { targetPos = punchPos; targetRange = punchRange; targetDamage = frontKickDamage; }
+    else if (triggerName == "UpSwordSwing") { targetPos = upPunchPos; targetRange = upPunchRange; targetDamage = frontKickDamage; }
+    else if (triggerName == "StaffSwing") { targetPos = punchPos; targetRange = frontKickRange; targetDamage = frontKickDamage; }
+    else if (triggerName == "StaffUpDownSwing") { targetPos = upPunchPos; targetRange = backKickRange; targetDamage = backKickDamage; }
+    else if (triggerName == "Finisher") { targetPos = frontKickPos; targetRange = backKickRange; targetDamage = 2 * backKickDamage; }
+    else if (triggerName == "Combo") { targetPos = frontKickPos; targetRange = punchRange; targetDamage = 2 * punchDamage; }
+    else if (triggerName == "TaijutsuCombo") { targetPos = backKickPos; targetRange = backKickRange; targetDamage = 3 * punchDamage; }
+
+    Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(targetPos.position, targetRange, whatIsEnemies);
     for (int i = 0; i < enemiesToDamage.Length; i++)
     {
       EnemyController enemy = enemiesToDamage[i].GetComponent<EnemyController>();
-      if (enemy != null)
-      {
-        enemy.TakeDamage(damageValue);
-      }
+      if (enemy != null) enemy.TakeDamage(targetDamage);
     }
-    timeBtwAttacks = startTimeBtwAttacks;
+  }
+
+  void HandleWeaponSwitching()
+  {
+    if (Input.GetKeyDown(KeyCode.Alpha1)) { currentWeapon = WeaponType.Fist; animator.SetInteger("WeaponID", 0); }
+    else if (Input.GetKeyDown(KeyCode.Alpha2)) { currentWeapon = WeaponType.Sword; animator.SetInteger("WeaponID", 1); }
+    else if (Input.GetKeyDown(KeyCode.Alpha3)) { currentWeapon = WeaponType.Staff; animator.SetInteger("WeaponID", 2); }
   }
 
   void OnDrawGizmosSelected()

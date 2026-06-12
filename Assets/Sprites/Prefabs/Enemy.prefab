@@ -199,12 +199,16 @@ MonoBehaviour:
   upPunchPos: {fileID: 8222752949009012602}
   backKickPos: {fileID: 4714750508953531979}
   downKickPos: {fileID: 1539007471218388458}
-  punchRange: 0.5
-  punchDamage: 10
-  frontKickRange: 0.7
-  frontKickDamage: 15
-  upPunchRange: 0.6
-  upPunchDamage: 12
+  punchRange: 0.31
+  punchDamage: 5
+  frontKickRange: 0.3
+  frontKickDamage: 8
+  upPunchRange: 0.43
+  upPunchDamage: 6
+  backKickRange: 0.45
+  backKickDamage: 8
+  downKickRange: 0.45
+  downKickDamage: 8
   startTimeBtwAttacks: 1.2
 --- !u!95 &510111999479848889
 Animator:

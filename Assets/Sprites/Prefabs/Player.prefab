@@ -148,7 +148,7 @@ MonoBehaviour:
   m_JumpForce: 200
   m_CrouchSpeed: 0.25
   m_MovementSmoothing: 0.05
-  m_AirControl: 0
+  m_AirControl: 1
   m_WhatIsGround:
     serializedVersion: 2
     m_Bits: 1
@@ -211,7 +211,7 @@ BoxCollider2D:
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 99269139cd9bf6e448f2632cc7d0898f, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -361,6 +361,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
   maxHealth: 100
+  animator: {fileID: 6611662551011514721}
   currentHealth: 0
 --- !u!1 &2240765037030431949
 GameObject:
@@ -387,7 +388,7 @@ Transform:
   m_GameObject: {fileID: 2240765037030431949}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.73, y: 0.48, z: 0}
+  m_LocalPosition: {x: 0.926, y: 0.48, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
