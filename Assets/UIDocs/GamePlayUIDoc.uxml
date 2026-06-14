@@ -1,0 +1,7 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/StyleSheets/UIStyleSheet.uss?fileID=7433441132597879392&amp;guid=05bc233838cd25b4d91a12cf5ea469a4&amp;type=3#UIStyleSheet"/>
+    <ui:VisualElement name="NarrationScreen" style="flex-grow: 1; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.74); align-items: flex-end; justify-content: center; white-space: pre-wrap;">
+        <ui:Label text="" name="NarrationText" style="font-size: 34px; white-space: normal;"/>
+        <ui:Button text="CONTINUE&#10;" name="ContinueButton" style="background-image: url(&quot;project://database/Assets/Dark%20UI/Free/ButtonLargeRound.png?fileID=2800000&amp;guid=ac9e02ea18781ab459dd5feca42c0db1&amp;type=3#ButtonLargeRound&quot;); -unity-background-image-tint-color: rgb(87, 145, 94); border-top-left-radius: 14px; border-top-right-radius: 14px; border-bottom-right-radius: 14px; border-bottom-left-radius: 14px; position: relative; width: 90px;"/>
+    </ui:VisualElement>
+</ui:UXML>

@@ -35,25 +35,33 @@ public class StartFight : MonoBehaviour
   {
     if (fightStarted) return;
 
-    EnemyController[] chasers = Object.FindObjectsByType<EnemyController>();
-    foreach (EnemyController chaser in chasers)
+    if (player.CompareTag("Player"))
     {
-      chaser.enabled = false; // Turns off their movement updates
+      fightStarted = true;
 
-      if (chaser.animator != null)
+      EnemyController[] chasers = Object.FindObjectsByType<EnemyController>();
+      foreach (EnemyController chaser in chasers)
       {
-        chaser.animator.SetFloat("Speed", 0f); // Forces them to stand still
+        chaser.enabled = false;
+
+        if (chaser.animator != null)
+        {
+          chaser.animator.SetFloat("Speed", 0f);
+        }
+      }
+
+      if (boundaryWalls != null)
+      {
+        boundaryWalls.SetActive(true);
+      }
+
+      if (enemy != null && spawnPoint != null)
+      {
+        Vector3 spawnPos = new Vector3(spawnPoint.position.x, spawnPoint.position.y, 0f);
+        activeFighter = Instantiate(enemy, spawnPos, Quaternion.identity);
+        activeFighter.name = "Arena_Fighter";
       }
     }
-
-    if (boundaryWalls != null)
-    {
-      boundaryWalls.SetActive(true);
-    }
-
-    Vector3 spawnPos = new Vector3(spawnPoint.position.x, spawnPoint.position.y, 0f);
-    activeFighter = Instantiate(enemy, spawnPos, Quaternion.identity);
-    activeFighter.name = "Arena_Fighter";
   }
 
   void EndFightArea()

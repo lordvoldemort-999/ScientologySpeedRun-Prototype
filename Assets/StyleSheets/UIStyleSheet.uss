@@ -1,0 +1,26 @@
+:root {
+    -unity-font-definition: url("project://database/Assets/FPSFont/FPS%20Gaming%20Font/Square-Black.ttf?fileID=12800000&guid=d7cffddcbc0cc8f4ebe6e28eb9804082&type=3#Square-Black");
+}
+
+Button {
+    padding-left: 6px;
+    padding-top: 6px;
+    padding-right: 6px;
+    padding-bottom: 6px;
+    margin-top: 6px;
+    margin-right: 6px;
+    margin-bottom: 6px;
+    margin-left: 6px;
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
+    border-bottom-right-radius: 14px;
+    border-bottom-left-radius: 14px;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-out-cubic;
+}
+
+Button:hover {
+    scale: 1.45 1.45;
+    text-shadow: 2px 4px 5px rgba(255, 255, 255, 0.72);
+    rotate: -10deg;
+}

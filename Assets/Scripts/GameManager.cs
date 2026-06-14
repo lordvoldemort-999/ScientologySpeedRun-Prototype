@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
     private Transform enemy2;
     private bool isGameOver = false;
 
-    void Start()
+    void OnEnable()
     {
         if (playerTransform != null && !playerTransform.gameObject.CompareTag("Player"))
         {
