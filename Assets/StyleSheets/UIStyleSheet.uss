@@ -24,3 +24,13 @@ Button:hover {
     text-shadow: 2px 4px 5px rgba(255, 255, 255, 0.72);
     rotate: -10deg;
 }
+
+.buttonGreen {
+    background-image: url("project://database/Assets/Dark%20UI/Free/ButtonLargeRound.png?fileID=2800000&guid=ac9e02ea18781ab459dd5feca42c0db1&type=3#ButtonLargeRound");
+    -unity-background-image-tint-color: rgb(59, 95, 56);
+}
+
+.buttonRed {
+    -unity-background-image-tint-color: rgb(145, 53, 53);
+    background-image: url("project://database/Assets/Dark%20UI/Free/ButtonLargeRound.png?fileID=2800000&guid=ac9e02ea18781ab459dd5feca42c0db1&type=3#ButtonLargeRound");
+}

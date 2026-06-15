@@ -1549,6 +1549,7 @@ GameObject:
   - component: {fileID: 970796217}
   - component: {fileID: 970796216}
   - component: {fileID: 970796215}
+  - component: {fileID: 970796218}
   m_Layer: 5
   m_Name: UIDocument
   m_TagString: Untagged
@@ -1568,10 +1569,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 198eafcff1150284dbb30402910399b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameNarrationManager
-  objectiveText: You need to participate in the new Sccientology speed run trend
-    so you don't get kicked out of your apartment. Evade the pursuers and beat the
-    floor bosses. Good luck, Markiplier.
-  typeSpeed: 0.08
+  objectiveText: You need to participate in the new Scientology speed run trend so
+    you don't get kicked out of your apartment. Evade the pursuers and beat the floor
+    bosses. Good luck, Markiplier.
+  typeSpeed: 0.06
   gameManagerScript: {fileID: 1807245612}
 --- !u!114 &970796216
 MonoBehaviour:
@@ -1611,6 +1612,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &970796218
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 970796214}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74103c1958339ed42a2ed46dc71be721, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameOverManager
+  mainMenuSceneName: MainMenu
 --- !u!1 &1238709670
 GameObject:
   m_ObjectHideFlags: 0
@@ -2297,7 +2311,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1807245612
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2314,6 +2328,7 @@ MonoBehaviour:
   playerTransform: {fileID: 270598323}
   spawnDistanceBehind: 4
   spaceBetweenEnemies: 1.5
+  gameOverUiScript: {fileID: 970796218}
 --- !u!4 &1807245613
 Transform:
   m_ObjectHideFlags: 0

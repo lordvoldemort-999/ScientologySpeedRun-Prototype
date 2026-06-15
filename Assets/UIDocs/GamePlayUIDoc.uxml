@@ -1,7 +1,24 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/StyleSheets/UIStyleSheet.uss?fileID=7433441132597879392&amp;guid=05bc233838cd25b4d91a12cf5ea469a4&amp;type=3#UIStyleSheet"/>
-    <ui:VisualElement name="NarrationScreen" style="flex-grow: 1; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.74); align-items: flex-end; justify-content: center; white-space: pre-wrap;">
+    <ui:VisualElement name="NarrationScreen" style="flex-grow: 1; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.74); align-items: flex-end; justify-content: center; white-space: pre-wrap; display: flex;">
         <ui:Label text="" name="NarrationText" style="font-size: 34px; white-space: normal;"/>
-        <ui:Button text="CONTINUE&#10;" name="ContinueButton" style="background-image: url(&quot;project://database/Assets/Dark%20UI/Free/ButtonLargeRound.png?fileID=2800000&amp;guid=ac9e02ea18781ab459dd5feca42c0db1&amp;type=3#ButtonLargeRound&quot;); -unity-background-image-tint-color: rgb(87, 145, 94); border-top-left-radius: 14px; border-top-right-radius: 14px; border-bottom-right-radius: 14px; border-bottom-left-radius: 14px; position: relative; width: 90px;"/>
+        <ui:Button text="CONTINUE&#10;" name="ContinueButton" class="buttonGreen" style="border-top-left-radius: 14px; border-top-right-radius: 14px; border-bottom-right-radius: 14px; border-bottom-left-radius: 14px; position: relative; width: 90px;"/>
+    </ui:VisualElement>
+    <ui:VisualElement name="GameOverScreen" style="flex-grow: 1; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.74); justify-content: center; align-content: center; display: flex; align-items: center;">
+        <ui:Label text="GAME OVER!!!" name="GameOverText" style="-unity-text-align: upper-center; font-size: 42px;"/>
+        <ui:VisualElement name="ButtonRow" style="flex-grow: 0; flex-direction: row; align-items: flex-start; justify-content: center; height: auto;">
+            <ui:Button text="RETRY" name="RetryButton" class="buttonGreen" style="width: 94px;"/>
+            <ui:Button text="MAIN MENU" emoji-fallback-support="true" name="MainMenuButton" class="buttonRed" style="width: 94px;"/>
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement name="PlayerHUD" style="flex-grow: 1; position: absolute; top: 20px; left: 20px; right: 20px; bottom: 20px; justify-content: space-between; display: flex;">
+        <ui:VisualElement name="TopRow" style="flex-grow: 1; flex-direction: row; justify-content: space-between;">
+            <ui:Label text="" name="DistanceText" style="width: auto; height: 41px;"/>
+            <ui:Button text="" name="PauseButton" icon-image="project://database/Assets/Dark%20UI/New%20Icons/White%20Pause.png?fileID=2800000&amp;guid=695ec439c313f054d89b5b577b8d8310&amp;type=3#White Pause" style="width: 40px; position: relative; height: 40px;"/>
+        </ui:VisualElement>
+        <ui:ProgressBar value="100" title="HEALTH" name="PlayerHealthBar"/>
+    </ui:VisualElement>
+    <ui:VisualElement name="EnemyHUD" style="flex-grow: 1; bottom: 0; align-items: flex-start; position: absolute; display: flex; top: 0; left: 0; width: auto; height: auto; align-content: center; justify-content: space-between; flex-direction: column; flex-wrap: wrap; flex-shrink: 1; right: 0;">
+        <ui:ProgressBar value="100" title="" name="EnemyHealthBar" style="position: absolute; left: 20px; width: 300px; right: 20px; top: 70px;"/>
     </ui:VisualElement>
 </ui:UXML>
