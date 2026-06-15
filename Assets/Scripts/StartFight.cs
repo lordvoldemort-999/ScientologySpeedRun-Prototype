@@ -11,6 +11,9 @@ public class StartFight : MonoBehaviour
   [Header("Arena Boundaries")]
   public GameObject boundaryWalls;
 
+  [Header("End of Level Route")]
+  public LevelExit levelExitPortal;
+
   private GameObject activeFighter;
   private EnemyController activeFighterHealth;
   private bool fightStarted = false;
@@ -121,6 +124,11 @@ public class StartFight : MonoBehaviour
     if (boundaryWalls != null)
     {
       boundaryWalls.SetActive(false);
+    }
+
+    if (levelExitPortal != null)
+    {
+      levelExitPortal.RevealExit();
     }
 
     Destroy(gameObject);

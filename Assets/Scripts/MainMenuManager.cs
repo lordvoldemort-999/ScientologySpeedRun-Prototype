@@ -10,6 +10,10 @@ public class MainMenuManager : MonoBehaviour
   private UIDocument uiDocument;
   private Button playButton;
   private Button quitButton;
+  private Button controlsButton;
+
+  private VisualElement controlsScreen;
+  private Button controlsBackButton;
 
   void OnEnable()
   {
@@ -19,9 +23,15 @@ public class MainMenuManager : MonoBehaviour
 
     playButton = uiDocument.rootVisualElement.Q<Button>("PlayButton");
     quitButton = uiDocument.rootVisualElement.Q<Button>("QuitButton");
+    controlsButton = uiDocument.rootVisualElement.Q<Button>("ControlsButton");
+
+    controlsScreen = uiDocument.rootVisualElement.Q<VisualElement>("ControlsScreen");
+    controlsBackButton = uiDocument.rootVisualElement.Q<Button>("ControlsBackButton");
 
     if (playButton != null) playButton.clicked += PlayGame;
     if (quitButton != null) quitButton.clicked += QuitGame;
+    if (controlsButton != null) controlsButton.clicked += OpenControls;
+    if (controlsBackButton != null) controlsBackButton.clicked += CloseControls;
   }
 
   void OnDisable()
@@ -41,5 +51,21 @@ public class MainMenuManager : MonoBehaviour
   {
     Debug.Log("UI Toolkit: Exiting application.");
     Application.Quit();
+  }
+
+  void OpenControls()
+  {
+    if (controlsScreen != null)
+    {
+      controlsScreen.style.display = DisplayStyle.Flex;
+    }
+  }
+
+  void CloseControls()
+  {
+    if (controlsScreen != null)
+    {
+      controlsScreen.style.display = DisplayStyle.None;
+    }
   }
 }

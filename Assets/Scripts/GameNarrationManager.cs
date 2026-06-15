@@ -8,10 +8,16 @@ public class GameNarrationManager : MonoBehaviour
   [TextArea(3, 5)]
   public string objectiveText = "SCIENTOLOGY SPEED RUN\nThere is a new trend on the internet to run through and map Scientology buildings.\nEvade the pursuers and defeat the floor boss. Don't die.\n\nGood luck.";
 
-  public float typeSpeed = 0.03f; // Seconds per letter for a typewriter effect
+  [Tooltip("Seconds per letter for a typewriter effect")]
+  public float typeSpeed = 0.03f;
+
+  [Header("Audio Settings")]
+  [Tooltip("Sound effect that plays for every letter typed.")]
+  public AudioClip typeSoundFX;
+  [Range(0f, 1f)] public float typeVolume = 0.5f;
 
   [Header("Scripts to Wake Up Later")]
-  public MonoBehaviour gameManagerScript; // Drag your main GameManager script here
+  public MonoBehaviour gameManagerScript;
 
   private UIDocument uiDocument;
   private VisualElement narrationScreen;
@@ -19,6 +25,11 @@ public class GameNarrationManager : MonoBehaviour
   private Label narrationLabel;
   private Button continueButton;
   private bool isTyping = false;
+
+  // Dialogue State Arrays
+  private string[] dialogueLines;
+  private int currentLineIndex = 0;
+  private System.Action onDialogueCompleteCallback;
 
   void Awake()
   {
@@ -34,6 +45,7 @@ public class GameNarrationManager : MonoBehaviour
       Debug.LogError("[Narration] Game Manager Script slot is empty! Please link it in the inspector.");
     }
   }
+
   void OnEnable()
   {
     uiDocument = GetComponent<UIDocument>();
@@ -46,7 +58,6 @@ public class GameNarrationManager : MonoBehaviour
 
     VisualElement enemyHudContainer = uiDocument.rootVisualElement.Q<VisualElement>("EnemyHUD");
     if (enemyHudContainer != null) enemyHudContainer.style.display = DisplayStyle.None;
-
     if (playerHudContainer != null) playerHudContainer.style.display = DisplayStyle.None;
 
     if (continueButton != null)
@@ -55,15 +66,20 @@ public class GameNarrationManager : MonoBehaviour
       continueButton.clicked += StartGameplay;
     }
 
-    if (narrationLabel != null) StartCoroutine(TypeText(objectiveText));
+    // Start the intro narration sequence
+    if (narrationLabel != null) StartCoroutine(TypeGenericString(objectiveText));
   }
 
   void OnDisable()
   {
-    if (continueButton != null) continueButton.clicked -= StartGameplay;
+    if (continueButton != null)
+    {
+      continueButton.clicked -= StartGameplay;
+      continueButton.clicked -= AdvanceDialogue;
+    }
   }
 
-  IEnumerator TypeText(string fullText)
+  IEnumerator TypeGenericString(string fullText)
   {
     isTyping = true;
     narrationLabel.text = "";
@@ -71,6 +87,13 @@ public class GameNarrationManager : MonoBehaviour
     foreach (char letter in fullText.ToCharArray())
     {
       narrationLabel.text += letter;
+
+      // Audio tick execution
+      if (AudioManager.Instance != null && typeSoundFX != null)
+      {
+        AudioManager.Instance.PlaySFX(typeSoundFX, typeVolume);
+      }
+
       yield return new WaitForSecondsRealtime(typeSpeed);
     }
 
@@ -82,30 +105,22 @@ public class GameNarrationManager : MonoBehaviour
     }
   }
 
-  // --- ADDED FOR PRE-FIGHT DIALOGUE ---
-  private string[] dialogueLines;
-  private int currentLineIndex = 0;
-  private System.Action onDialogueCompleteCallback;
-
   public void StartPreFightDialogue(string[] lines, System.Action onComplete)
   {
-    // Freeze gameplay vectors
     Time.timeScale = 0f;
 
     dialogueLines = lines;
     currentLineIndex = 0;
     onDialogueCompleteCallback = onComplete;
 
-    // Show the narration overlay screen canvas box
     if (narrationScreen != null) narrationScreen.style.display = DisplayStyle.Flex;
     if (playerHudContainer != null) playerHudContainer.style.display = DisplayStyle.None;
     if (continueButton != null) continueButton.style.display = DisplayStyle.None;
 
-    // Hook into a modified continue loop or handle the clicks locally
     if (continueButton != null)
     {
-      continueButton.clicked -= StartGameplay; // Unhook standard intro hook
-      continueButton.clicked += AdvanceDialogue;
+      continueButton.clicked -= StartGameplay; // Safely strip menu routing
+      continueButton.clicked += AdvanceDialogue; // Append script dialogue navigation
     }
 
     StartNextDialogueLine();
@@ -114,22 +129,7 @@ public class GameNarrationManager : MonoBehaviour
   void StartNextDialogueLine()
   {
     if (continueButton != null) continueButton.style.display = DisplayStyle.None;
-    StartCoroutine(TypeDialogueLine(dialogueLines[currentLineIndex]));
-  }
-
-  IEnumerator TypeDialogueLine(string line)
-  {
-    isTyping = true;
-    narrationLabel.text = "";
-
-    foreach (char letter in line.ToCharArray())
-    {
-      narrationLabel.text += letter;
-      yield return new WaitForSecondsRealtime(typeSpeed);
-    }
-
-    isTyping = false;
-    if (continueButton != null) continueButton.style.display = DisplayStyle.Flex;
+    StartCoroutine(TypeGenericString(dialogueLines[currentLineIndex]));
   }
 
   void AdvanceDialogue()
@@ -144,11 +144,9 @@ public class GameNarrationManager : MonoBehaviour
     }
     else
     {
-      // Clean up conversation hooks
       if (continueButton != null) continueButton.clicked -= AdvanceDialogue;
       if (narrationScreen != null) narrationScreen.style.display = DisplayStyle.None;
 
-      // Resume engine timeline and trigger our callback
       Time.timeScale = 1f;
       onDialogueCompleteCallback?.Invoke();
     }
@@ -158,11 +156,8 @@ public class GameNarrationManager : MonoBehaviour
   {
     if (isTyping) return;
 
-    if (narrationScreen != null)
-    {
-      narrationScreen.style.display = DisplayStyle.None;
-    }
-
+    if (continueButton != null) continueButton.clicked -= StartGameplay;
+    if (narrationScreen != null) narrationScreen.style.display = DisplayStyle.None;
     if (playerHudContainer != null) playerHudContainer.style.display = DisplayStyle.Flex;
 
     Time.timeScale = 1f;

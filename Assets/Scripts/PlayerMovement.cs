@@ -11,23 +11,40 @@ public class PlayerMovement : MonoBehaviour
   bool crouch = false;
   public Animator animator;
 
-  // Start is called once before the first execution of Update after the MonoBehaviour is created
+  [Header("Footstep Audio Collections")]
+  [Tooltip("Drop your collection of walking footstep sounds here.")]
+  public AudioClip[] walkSounds;
+  [Tooltip("Drop your collection of sprinting footstep sounds here.")]
+  public AudioClip[] sprintSounds;
+  [Range(0f, 1f)] public float footstepVolume = 0.4f;
+
+  [Header("Footstep Rhythm Timing")]
+  [Tooltip("Time between steps when walking (higher = slower pacing).")]
+  public float walkStepInterval = 0.45f;
+  [Tooltip("Time between steps when sprinting (lower = faster pacing).")]
+  public float sprintStepInterval = 0.28f;
+
+  private float footstepTimer;
+  private bool isSprinting = false;
+  private bool isGrounded = true;
+
   void Start()
   {
     currentSpeed = walkSpeed;
   }
 
-  // Update is called once per frame
   void Update()
   {
     if (Input.GetKey(KeyCode.LeftShift))
     {
       currentSpeed = sprintSpeed;
+      isSprinting = true;
       print("You are sprinting");
     }
     else
     {
       currentSpeed = walkSpeed;
+      isSprinting = false;
     }
 
     horizontalMove = Input.GetAxisRaw("Horizontal") * currentSpeed;
@@ -36,6 +53,7 @@ public class PlayerMovement : MonoBehaviour
     if (Input.GetButtonDown("Jump"))
     {
       jump = true;
+      isGrounded = false;
       animator.SetBool("IsJumping", true);
     }
 
@@ -50,12 +68,26 @@ public class PlayerMovement : MonoBehaviour
 
     animator.SetBool("IsCrouching", crouch);
 
-    // Check if player goes out of bounds and reset position
+    if (Mathf.Abs(horizontalMove) > 0.1f && isGrounded && !crouch)
+    {
+      footstepTimer -= Time.deltaTime;
+
+      if (footstepTimer <= 0f)
+      {
+        PlayFootstepSound();
+        footstepTimer = isSprinting ? sprintStepInterval : walkStepInterval;
+      }
+    }
+    else
+    {
+      footstepTimer = 0f;
+    }
   }
 
   public void OnLanding()
   {
     animator.SetBool("IsJumping", false);
+    isGrounded = true;
   }
 
   public void OnCrouching(bool isCrouching)
@@ -68,5 +100,29 @@ public class PlayerMovement : MonoBehaviour
     controller.Move(horizontalMove * Time.fixedDeltaTime, crouch, jump);
     jump = false;
   }
-}
 
+  void PlayFootstepSound()
+  {
+    if (AudioManager.Instance == null) return;
+
+    AudioClip chosenClip = null;
+
+    if (isSprinting)
+    {
+      if (sprintSounds == null || sprintSounds.Length == 0) return;
+      int randomIndex = Random.Range(0, sprintSounds.Length);
+      chosenClip = sprintSounds[randomIndex];
+    }
+    else
+    {
+      if (walkSounds == null || walkSounds.Length == 0) return;
+      int randomIndex = Random.Range(0, walkSounds.Length);
+      chosenClip = walkSounds[randomIndex];
+    }
+
+    if (chosenClip != null)
+    {
+      AudioManager.Instance.PlaySFX(chosenClip, footstepVolume);
+    }
+  }
+}
