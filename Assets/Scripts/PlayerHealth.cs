@@ -1,5 +1,6 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class PlayerHealth : MonoBehaviour
 {
@@ -8,20 +9,21 @@ public class PlayerHealth : MonoBehaviour
   public int maxHealth = 100;
   public Animator animator;
   public int currentHealth;
+
   void Start()
   {
     currentHealth = maxHealth;
+    if (GameHUDManager.Instance != null) GameHUDManager.Instance.UpdatePlayerHealth(currentHealth, maxHealth);
   }
 
   public void TakeDamage (int damage)
   {
     currentHealth -= damage;
+    currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
     print("Player took " + damage + " damage! Remaining health: " + currentHealth);
     animator.SetTrigger("Damaged");
-    if (currentHealth <= 0)
-    {
-      Die();
-    }
+    if (GameHUDManager.Instance != null) GameHUDManager.Instance.UpdatePlayerHealth(currentHealth, maxHealth);
+    if (currentHealth <= 0) Die();
   }
 
   void Die()
@@ -30,7 +32,6 @@ public class PlayerHealth : MonoBehaviour
     animator.SetTrigger("Defeat");
   }
 
-  // Function is called once the death animation ends
   public void DestroyCharacter()
   {
     Destroy(gameObject);

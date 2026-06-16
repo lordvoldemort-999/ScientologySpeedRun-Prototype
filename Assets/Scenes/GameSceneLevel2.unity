@@ -178,10 +178,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 198eafcff1150284dbb30402910399b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameNarrationManager
-  objectiveText: You need to participate in the new Scientology speed run trend so
-    you don't get kicked out of your apartment. Evade the pursuers and beat the floor
-    bosses. Good luck, Markiplier.
+  objectiveText: "You made it to Level 2. Here the staff are much stronger, and the
+    floor boss... \nGOOD LUCK."
   typeSpeed: 0.06
+  typeSoundFX: {fileID: 8300000, guid: 80d3799791748ac42b3ec097c17a2383, type: 3}
+  typeVolume: 0.5
   gameManagerScript: {fileID: 1990938908}
 --- !u!114 &73233294
 MonoBehaviour:
@@ -253,7 +254,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 625f8f254471b8145852db21f4faae95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelExit
-  nextSceneName: GameSceneLevel2
+  nextSceneName: MainMenu
+  isGameEndingExit: 1
+  endingNarrationText: CONGRATULATIONS! You defeated Tom Cruise. You gained 40,000
+    new subscribers on YouTube. You will not get kicked out of your apartment now!
 --- !u!61 &147064251
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2206,17 +2210,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38eb5579a244ec8438c28283fd7ec493, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StartFight
-  enemy: {fileID: 1249583534456246586, guid: 21f30fee36cbaec40a02c80688db137d, type: 3}
+  enemy: {fileID: 1249583534456246586, guid: 6839e91fbfd1ea04bbf7133b52878ec8, type: 3}
   spawnPoint: {fileID: 611165877}
-  enemyDisplayName: Senior Staff Member
+  enemyDisplayName: Tom Cruise
   boundaryWalls: {fileID: 1286849029}
   levelExitPortal: {fileID: 147064250}
   combatDialogue:
-  - 'MARKIPLIER: Oh come on!'
-  - 'SENIOR STAFF MEMBER: Sir, I will have to politely ask you to leave the building.'
-  - 'MARKIPLIER: Oh hell nah.'
-  - 'SENIOR STAFF MEMBER: I will have to remove you by force then.'
-  - 'MARKIPLIER: Watch this, chat.'
+  - 'TOM CRUISE: Hey kid, wanna turn around now?'
+  - 'MARKIPLIER: Holy, chat it''s Tom Cruise!'
+  - 'TOM CRUISE: Alright then fight it is.'
+  - 'MARKIPLIER: Damn.'
 --- !u!61 &866323004
 BoxCollider2D:
   m_ObjectHideFlags: 0

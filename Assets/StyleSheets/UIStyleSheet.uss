@@ -40,3 +40,10 @@ Button:hover {
     background-image: url("project://database/Assets/Dark%20UI/Free/ButtonLargeRound.png?fileID=2800000&guid=ac9e02ea18781ab459dd5feca42c0db1&type=3#ButtonLargeRound");
     -unity-background-image-tint-color: rgb(184, 176, 47);
 }
+
+.activeWeapon {
+    border-left-color: rgb(55, 89, 55);
+    border-right-color: rgb(55, 89, 55);
+    border-top-color: rgb(55, 89, 55);
+    border-bottom-color: rgb(55, 89, 55);
+}

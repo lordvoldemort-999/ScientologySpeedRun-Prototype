@@ -7,9 +7,15 @@ public class LevelExit : MonoBehaviour
   [Tooltip("The exact build name of your next scene layout.")]
   public string nextSceneName;
 
+  [Header("End of Game Narration")]
+  public bool isGameEndingExit = false;
+
+  [TextArea(3, 5)]
+  public string endingNarrationText = "";
+
   private Collider2D levelCollider;
   private SpriteRenderer levelSprite;
-  private HoverObject hoverScript; // Pulls the script we just made!
+  private HoverObject hoverScript;
 
   void Awake()
   {
@@ -17,7 +23,6 @@ public class LevelExit : MonoBehaviour
     levelSprite = GetComponent<SpriteRenderer>();
     hoverScript = GetComponent<HoverObject>();
 
-    // Start hidden and inactive
     HideExit();
   }
 
@@ -28,7 +33,6 @@ public class LevelExit : MonoBehaviour
     if (hoverScript != null) hoverScript.enabled = false;
   }
 
-  // This method will be called by your StartFight script when the boss dies
   public void RevealExit()
   {
     Debug.Log("[Exit] Enemy cleared! Activating level exit portal.");
@@ -47,12 +51,36 @@ public class LevelExit : MonoBehaviour
   {
     if (other.CompareTag("Player"))
     {
-      Debug.Log($"[Exit] Player entered exit trigger. Loading: {nextSceneName}");
-
-      // Make sure time flows normally in case anything was paused
       Time.timeScale = 1f;
 
-      SceneManager.LoadScene(nextSceneName);
+      if (isGameEndingExit)
+      {
+        GameNarrationManager narrationManager = Object.FindAnyObjectByType<GameNarrationManager>();
+
+        if (narrationManager != null)
+        {
+          Debug.Log("[Exit] Triggering final victory narration screen layout.");
+          string[] lines = new string[] { endingNarrationText };
+          narrationManager.StartPreFightDialogue(lines, LoadTargetScene);
+          if (levelSprite != null) levelSprite.enabled = false;
+          if (levelCollider != null) levelCollider.enabled = false;
+        }
+        else
+        {
+          LoadTargetScene();
+        }
+      }
+      else
+      {
+        LoadTargetScene();
+      }
     }
+  }
+
+  private void LoadTargetScene()
+  {
+    Debug.Log($"[Exit] Player completed step routing. Loading target layout: {nextSceneName}");
+    Time.timeScale = 1f;
+    SceneManager.LoadScene(nextSceneName);
   }
 }

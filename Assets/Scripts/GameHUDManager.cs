@@ -21,6 +21,8 @@ public class GameHUDManager : MonoBehaviour
 
   private bool isPaused = false;
 
+  private VisualElement[] weaponSlots = new VisualElement[3];
+
   void Awake()
   {
     if (Instance == null) Instance = this;
@@ -40,12 +42,35 @@ public class GameHUDManager : MonoBehaviour
     enemyHudContainer = uiDocument.rootVisualElement.Q<VisualElement>("EnemyHUD");
     enemyHealthBar = uiDocument.rootVisualElement.Q<ProgressBar>("EnemyHealthBar");
 
+    weaponSlots[0] = uiDocument.rootVisualElement.Q<VisualElement>("WeaponSlot0");
+    weaponSlots[1] = uiDocument.rootVisualElement.Q<VisualElement>("WeaponSlot1");
+    weaponSlots[2] = uiDocument.rootVisualElement.Q<VisualElement>("WeaponSlot2");
+
+    SetSelectedWeaponIndicator(0);
+
     if (pauseButton != null) pauseButton.clicked += TogglePause;
   }
 
   void OnDisable()
   {
     if (pauseButton != null) pauseButton.clicked -= TogglePause;
+  }
+
+  public void SetSelectedWeaponIndicator(int activeIndex)
+  {
+    for (int i = 0; i < weaponSlots.Length; i++)
+    {
+      if (weaponSlots[i] == null) continue;
+
+      if (i == activeIndex)
+      {
+        weaponSlots[i].AddToClassList("activeWeapon");
+      }
+      else
+      {
+        weaponSlots[i].RemoveFromClassList("activeWeapon");
+      }
+    }
   }
 
   public void UpdateDistanceDisplay(float distance)
@@ -55,7 +80,9 @@ public class GameHUDManager : MonoBehaviour
 
   public void UpdatePlayerHealth(float currentHealth, float maxHealth)
   {
-    if (playerHealthBar != null) playerHealthBar.value = currentHealth / maxHealth * 100;
+    if (playerHealthBar == null) return;
+    playerHealthBar.highValue = maxHealth;
+    playerHealthBar.value = currentHealth;
   }
 
   public void ShowEnemyHealthBar(string enemyName, float currentHealth, float maxHealth)

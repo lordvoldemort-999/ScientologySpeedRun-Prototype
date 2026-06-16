@@ -38,6 +38,13 @@
                 <ui:Label text="K"/>
                 <ui:Label text="HEAVY ATTACK"/>
             </ui:VisualElement>
+            <ui:VisualElement name="ControlRow" style="flex-grow: 1; flex-wrap: nowrap;">
+                <ui:Label text="HOLD SHIFT &#10;WHILE ATTACKING TO &#10;PERFORM COMBO" style="white-space: nowrap;"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="ControlRow" style="flex-grow: 1; flex-direction: row;">
+                <ui:Label text="1, 2,3"/>
+                <ui:Label text="SWITCH WEAPONS"/>
+            </ui:VisualElement>
         </ui:VisualElement>
         <ui:Button text="BACK" name="ControlsBackButton" class="buttonRed"/>
     </ui:VisualElement>

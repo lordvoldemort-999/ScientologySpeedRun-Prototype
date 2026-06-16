@@ -1,8 +1,4 @@
-using System;
-using NUnit.Framework;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class PlayerAttack : MonoBehaviour
 {
@@ -187,9 +183,24 @@ public class PlayerAttack : MonoBehaviour
 
   void HandleWeaponSwitching()
   {
-    if (Input.GetKeyDown(KeyCode.Alpha1)) { currentWeapon = WeaponType.Fist; animator.SetInteger("WeaponID", 0); }
-    else if (Input.GetKeyDown(KeyCode.Alpha2)) { currentWeapon = WeaponType.Sword; animator.SetInteger("WeaponID", 1); }
-    else if (Input.GetKeyDown(KeyCode.Alpha3)) { currentWeapon = WeaponType.Staff; animator.SetInteger("WeaponID", 2); }
+    if (Input.GetKeyDown(KeyCode.Alpha1))
+    {
+      currentWeapon = WeaponType.Fist;
+      animator.SetInteger("WeaponID", 0);
+      if (GameHUDManager.Instance != null) GameHUDManager.Instance.SetSelectedWeaponIndicator(0);
+    }
+    else if (Input.GetKeyDown(KeyCode.Alpha2))
+    {
+      currentWeapon = WeaponType.Sword;
+      animator.SetInteger("WeaponID", 1);
+      if (GameHUDManager.Instance != null) GameHUDManager.Instance.SetSelectedWeaponIndicator(1);
+    }
+    else if (Input.GetKeyDown(KeyCode.Alpha3))
+    {
+      currentWeapon = WeaponType.Staff;
+      animator.SetInteger("WeaponID", 2);
+      if (GameHUDManager.Instance != null) GameHUDManager.Instance.SetSelectedWeaponIndicator(2);
+    }
   }
 
   void OnDrawGizmosSelected()
