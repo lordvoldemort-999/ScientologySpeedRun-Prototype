@@ -46,4 +46,12 @@ Button:hover {
     border-right-color: rgb(55, 89, 55);
     border-top-color: rgb(55, 89, 55);
     border-bottom-color: rgb(55, 89, 55);
+    border-top-width: 2px;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+    border-left-width: 2px;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+    border-bottom-left-radius: 2px;
 }
