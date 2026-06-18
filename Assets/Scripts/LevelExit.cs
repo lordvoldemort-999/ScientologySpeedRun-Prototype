@@ -40,7 +40,6 @@ public class LevelExit : MonoBehaviour
     if (levelCollider != null) levelCollider.enabled = true;
     if (levelSprite != null) levelSprite.enabled = true;
 
-    // Turn on the smooth float mechanics we built earlier
     if (hoverScript != null)
     {
       hoverScript.enabled = true;

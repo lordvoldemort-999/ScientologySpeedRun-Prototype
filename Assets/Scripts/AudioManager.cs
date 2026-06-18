@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-  // Static instance that any other script can access (e.g., AudioManager.Instance.PlaySFX())
   public static AudioManager Instance { get; private set; }
 
   [Header("Audio Sources")]

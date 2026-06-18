@@ -61,7 +61,7 @@ public class PlayerAttack : MonoBehaviour
       inputBufferTimer -= Time.deltaTime;
       if (inputBufferTimer <= 0)
       {
-        bufferedInput = "";         // Timer expired, clear the stored input
+        bufferedInput = "";
       }
     }
 

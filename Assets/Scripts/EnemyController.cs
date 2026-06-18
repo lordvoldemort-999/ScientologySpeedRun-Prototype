@@ -76,7 +76,7 @@ public class EnemyController : MonoBehaviour
     {
       timeBtwAttacks -= Time.deltaTime;
       FacePlayer();
-      animator.SetFloat("Speed", 0f); // Stand still while on attack cooldown
+      animator.SetFloat("Speed", 0f);
     }
   }
 
@@ -84,7 +84,6 @@ public class EnemyController : MonoBehaviour
   {
     FacePlayer();
 
-    // Smoothly glide straight through everything towards the player's exact position
     transform.position = Vector2.MoveTowards(transform.position, playerTransform.position, moveSpeed * Time.deltaTime);
 
     animator.SetFloat("Speed", 1f);

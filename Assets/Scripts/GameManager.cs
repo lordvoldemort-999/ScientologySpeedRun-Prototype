@@ -96,7 +96,6 @@ public class GameManager : MonoBehaviour
 
     if (closestDistance != float.MaxValue)
     {
-      // Safely updates the distance text through our UI script component
       if (GameHUDManager.Instance != null)
       {
         GameHUDManager.Instance.UpdateDistanceDisplay(closestDistance);

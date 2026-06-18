@@ -55,7 +55,6 @@ public class StartFight : MonoBehaviour
     {
       dialoguePlayed = true;
 
-      // Stop all moving chasers outside immediately
       EnemyController[] chasers = Object.FindObjectsByType<EnemyController>();
       foreach (EnemyController chaser in chasers)
       {

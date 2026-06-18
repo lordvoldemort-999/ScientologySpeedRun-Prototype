@@ -119,8 +119,8 @@ public class GameNarrationManager : MonoBehaviour
 
     if (continueButton != null)
     {
-      continueButton.clicked -= StartGameplay; // Safely strip menu routing
-      continueButton.clicked += AdvanceDialogue; // Append script dialogue navigation
+      continueButton.clicked -= StartGameplay;
+      continueButton.clicked += AdvanceDialogue;
     }
 
     StartNextDialogueLine();
